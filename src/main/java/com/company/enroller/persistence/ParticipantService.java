@@ -2,10 +2,16 @@ package com.company.enroller.persistence;
 
 import java.util.Collection;
 
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.company.enroller.model.Participant;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Component("participantService")
 public class ParticipantService {
@@ -22,4 +28,24 @@ public class ParticipantService {
 		return query.list();
 	}
 
+	public Participant findByLogin(String login){
+		return(Participant) connector.getSession().get(Participant.class, login);
+	}
+
+	public void delete(Participant participant){
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().delete(participant);
+		transaction.commit();
+	}
+	public void add(Participant participant) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().save(participant);
+		transaction.commit();
+	}
+
+	public void update(Participant participant) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().save(participant);
+		transaction.commit();
+	}
 }
